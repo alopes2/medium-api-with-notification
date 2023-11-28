@@ -49,6 +49,11 @@ on:
       - main
     paths:
       - iac/*
+      - .github/workflows/deploy-infra.yml
+
+defaults:
+  run:
+    working-directory: iac/
 
 jobs:
   terraform:
