@@ -1,47 +1,6 @@
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-
-  }
-}
-
-resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_for_lambda"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-
-data "archive_file" "lambda" {
-  type        = "zip"
-  source_file = "./configurations/init_lambda_functions/index.js"
-  output_path = "lambda_function_payload.zip"
-}
-
-resource "aws_lambda_function" "get_movies" {
-  filename      = data.archive_file.lambda.output_path
-  function_name = "GetMoviesLambda"
-  role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "index.handler"
-
-  source_code_hash = data.archive_file.lambda.output_base64sha256
-
+module "get_movies_lambda" {
+  source  = "./modules/lambda"
+  name    = "GetMoviesLambda"
   runtime = "nodejs20.x"
-
-
-  lifecycle {
-    ignore_changes = [filename, source_code_hash]
-  }
-
-  environment {
-    variables = {
-      foo = "bar"
-    }
-  }
+  handler = "index.handler"
 }
