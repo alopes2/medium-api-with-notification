@@ -20,7 +20,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "./configurations/init_lambda_functions/get_movies_init.js"
+  source_file = "./configurations/init_lambda_functions/index.js"
   output_path = "lambda_function_payload.zip"
 }
 
@@ -36,7 +36,7 @@ resource "aws_lambda_function" "get_movies" {
 
 
   lifecycle {
-    ignore_changes = [filename]
+    ignore_changes = [filename, source_code_hash]
   }
 
   environment {
