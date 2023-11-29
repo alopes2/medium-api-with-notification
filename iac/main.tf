@@ -20,12 +20,12 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "lambda.js"
+  source_file = "./configurations/init_lambda_functions/get_movies_init.js"
   output_path = "lambda_function_payload.zip"
 }
 
 resource "aws_lambda_function" "get_movies" {
-  filename      = "lambda_function_payload.zip"
+  filename      = data.archive_file.lambda.output_path
   function_name = "GetMoviesLambda"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "index.handler"
@@ -33,6 +33,11 @@ resource "aws_lambda_function" "get_movies" {
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
   runtime = "nodejs20.x"
+
+
+  lifecycle {
+    ignore_changes = [filename]
+  }
 
   environment {
     variables = {
