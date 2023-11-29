@@ -28,7 +28,7 @@ resource "aws_lambda_function" "get_movies" {
   filename      = data.archive_file.lambda.output_path
   function_name = "GetMoviesLambda"
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "index.handlerTwo"
+  handler       = "index.handler"
 
   source_code_hash = data.archive_file.lambda.output_base64sha256
 
