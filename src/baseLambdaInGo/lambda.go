@@ -11,13 +11,13 @@ type MyEvent struct {
 }
 
 type Response struct {
-	Body string `json:"body"`
-	StatusCode int `json:"statusCode"`
+	Body       string `json:"body"`
+	StatusCode int    `json:"statusCode"`
 }
 
 func HandleRequest(ctx context.Context, event *MyEvent) (*Response, error) {
-	message := Response {
-		Body:"Hello from Lambda!",
+	message := Response{
+		Body:       "Hello from Lambda!",
 		StatusCode: 200,
 	}
 	return &message, nil
