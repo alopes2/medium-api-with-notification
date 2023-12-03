@@ -39,12 +39,18 @@ resource "aws_api_gateway_resource" "movies_resource" {
   rest_api_id = aws_api_gateway_rest_api.movies_api.id
 }
 
+resource "aws_api_gateway_resource" "movie_resource" {
+  parent_id   = aws_api_gateway_resource.movies_resource.id
+  path_part   = "{movieID}"
+  rest_api_id = aws_api_gateway_rest_api.movies_api.id
+}
+
 module "get_movie_method" {
   source               = "./modules/rest-api-method"
   api_id               = aws_api_gateway_rest_api.movies_api.id
   http_method          = "GET"
-  resource_id          = aws_api_gateway_resource.movies_resource.id
-  resource_path        = aws_api_gateway_resource.movies_resource.path
+  resource_id          = aws_api_gateway_resource.movie_resource.id
+  resource_path        = aws_api_gateway_resource.movie_resource.path
   integration_uri      = module.get_movie_lambda.invoke_arn
   lambda_function_name = module.get_movie_lambda.name
   account_id           = var.account_id
