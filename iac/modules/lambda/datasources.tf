@@ -1,4 +1,6 @@
-
+locals {
+  filename = strcontains(var.runtime, "node") ? "index.mjs" : "main"
+}
 
 data "archive_file" "lambda" {
   type        = "zip"

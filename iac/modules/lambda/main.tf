@@ -1,7 +1,3 @@
-locals {
-  filename = strcontains(var.runtime, "node") ? "index.js" : "main"
-}
-
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "${var.name}-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
