@@ -53,5 +53,6 @@ module "get_movie_method" {
   resource_path        = aws_api_gateway_resource.movie_resource.path
   integration_uri      = module.get_movie_lambda.invoke_arn
   lambda_function_name = module.get_movie_lambda.name
+  region               = var.region
   account_id           = var.account_id
 }

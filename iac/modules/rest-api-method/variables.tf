@@ -28,7 +28,12 @@ variable "lambda_function_name" {
   type        = string
 }
 
+variable "region" {
+  description = "The region of the REST API resources"
+  type        = string
+}
+
 variable "account_id" {
-  description = "The AWS Account ID for the resource"
+  description = "The ID of the AWS account"
   type        = string
 }
