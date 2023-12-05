@@ -1,11 +1,3 @@
-# Lambdas
-module "get_movie_lambda" {
-  source  = "./modules/lambda"
-  name    = "get-movie"
-  runtime = "nodejs20.x"
-  handler = "index.handler"
-}
-
 # API Gateway
 resource "aws_api_gateway_rest_api" "movies_api" {
   name = "movies-api"
