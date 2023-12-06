@@ -22,18 +22,18 @@ resource "aws_dynamodb_table_item" "the_matrix" {
   hash_key   = aws_dynamodb_table.movies-table.hash_key
   range_key  = aws_dynamodb_table.movies-table.range_key
 
-  item = <<ITEM
-  {
-    "ID": {"S": "1"},
-    "Title": {"S": "The Matrix"},
-    "Genres": {"SS": [
+  item = jsonencode(
+    {
+      ID    = { S = "1" },
+      Title = { S = "The Matrix" },
+      Genres = { SS = [
         "Action",
-        "Sci-Fi"
-      ]
-    },
-    "Rating": {"N": "8.7"}
-  }
-  ITEM
+        "Sci-Fi",
+        ]
+      },
+      Rating = { N = "8.7" }
+    }
+  )
 }
 
 resource "aws_dynamodb_table_item" "scott_pilgrim" {
@@ -41,18 +41,18 @@ resource "aws_dynamodb_table_item" "scott_pilgrim" {
   hash_key   = aws_dynamodb_table.movies-table.hash_key
   range_key  = aws_dynamodb_table.movies-table.range_key
 
-  item = <<ITEM
-  {
-    "ID": {"S": "2"},
-    "Title": {"S": "Scott Pilgrim vs. the World"},
-    "Genres": {"SS": [
-          "Action",
-          "Comedy"
+  item = jsonencode(
+    {
+      ID    = { S = "2" },
+      Title = { S = "Scott Pilgrim vs. the World" },
+      Genres = { SS = [
+        "Action",
+        "Comedy",
         ]
       },
-    "Rating": {"N": "7.5"}
-  }
-  ITEM
+      Rating = { N = "7.5" }
+    }
+  )
 }
 
 resource "aws_dynamodb_table_item" "star_wars" {
@@ -60,20 +60,20 @@ resource "aws_dynamodb_table_item" "star_wars" {
   hash_key   = aws_dynamodb_table.movies-table.hash_key
   range_key  = aws_dynamodb_table.movies-table.range_key
 
-  item = <<ITEM
-  {
-    "ID": {"S": "3"},
-    "Title": {"S": "Star Wars: Episode IV - A New Hope"},
-    "Genres": {"SS": [
-          "Action",
-          "Adventure",
-          "Sci-Fi",
-          "Fantasy"
+  item = jsonencode(
+    {
+      ID    = { S = "3" },
+      Title = { S = "Star Wars: Episode IV - A New Hope" },
+      Genres = { SS = [
+        "Action",
+        "Adventure",
+        "Fantasy",
+        "Sci-Fi",
         ]
       },
-    "Rating": {"N": "8.6" }
-  }
-  ITEM
+      Rating = { N = "8.6" }
+    }
+  )
 }
 
 resource "aws_dynamodb_table_item" "star_wars_v" {
@@ -81,18 +81,18 @@ resource "aws_dynamodb_table_item" "star_wars_v" {
   hash_key   = aws_dynamodb_table.movies-table.hash_key
   range_key  = aws_dynamodb_table.movies-table.range_key
 
-  item = <<ITEM
-  {
-    "ID": {"S": "4"},
-    "Title": {"S": "Star Wars: Episode V - The Empire Strikes Back"},
-    "Genres": {"SS": [
-          "Action",
-          "Adventure",
-          "Sci-Fi",
-          "Fantasy"
+  item = jsonencode(
+    {
+      ID    = { S = "4" },
+      Title = { S = "Star Wars: Episode V - The Empire Strikes Back" },
+      Genres = { SS = [
+        "Action",
+        "Adventure",
+        "Fantasy",
+        "Sci-Fi",
         ]
       },
-    "Rating": {"N": "8.7" }
-  }
-  ITEM
+      Rating = { N = "8.7" }
+    }
+  )
 }
