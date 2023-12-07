@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "copyfiles -u 1 src/**/* build/ && copyfiles package.json build/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,5 +15,8 @@
     "@aws-sdk/client-dynamodb": "^3.468.0",
     "@aws-sdk/lib-dynamodb": "^3.468.0",
     "aws-sdk": "^2.1513.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
   }
 }
