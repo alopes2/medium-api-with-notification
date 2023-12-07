@@ -13,7 +13,7 @@ defaults:
 
 jobs:
   terraform:
-    name: "Terraform"
+    name: "Deploy GetMovie Lambda"
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository to the GitHub Actions runner

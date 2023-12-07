@@ -21,25 +21,37 @@ export const handler = async (event) => {
   const command = new GetCommand({
     TableName: tableName,
     Key: {
-      ID: movieID,
+      ID: {
+        S: movieID,
+      },
     },
   });
 
-  const dynamoResponse = await docClient.send(command);
+  try {
+    const dynamoResponse = await docClient.send(command);
+    if (!dynamoResponse.Item) {
+      return {
+        statusCode: 404,
+        body: {
+          message: "Movie not found",
+        },
+      };
+    }
 
-  if (!dynamoResponse.Item) {
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(dynamoResponse.Item),
+    };
+
+    return response;
+  } catch (e) {
+    console.log(e);
+
     return {
-      statusCode: 404,
+      statusCode: 500,
       body: {
-        message: "Movie not found",
+        message: e.message,
       },
     };
   }
-
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(dynamoResponse.Item),
-  };
-
-  return response;
 };
