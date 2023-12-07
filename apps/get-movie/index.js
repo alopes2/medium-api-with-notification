@@ -15,15 +15,15 @@ export const handler = async (event) => {
     };
   }
 
+  console.log("Getting movie with ID ", movieID);
+
   const client = new DynamoDBClient({});
   const docClient = DynamoDBDocumentClient.from(client);
 
   const command = new GetCommand({
     TableName: tableName,
     Key: {
-      ID: {
-        S: movieID,
-      },
+      ID: movieID.toString(),
     },
   });
 
