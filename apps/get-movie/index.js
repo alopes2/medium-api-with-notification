@@ -9,9 +9,9 @@ export const handler = async (event) => {
   if (!movieID) {
     return {
       statusCode: 400,
-      body: {
-        message: "Movie ID missing",
-      },
+      body: JSON.stringify({
+        message: "Movie not missing",
+      }),
     };
   }
 
@@ -32,15 +32,23 @@ export const handler = async (event) => {
     if (!dynamoResponse.Item) {
       return {
         statusCode: 404,
-        body: {
+        body: JSON.stringify({
           message: "Movie not found",
-        },
+        }),
       };
     }
 
+    const body = {
+      title: dynamoResponse.Item.Title,
+      rating: dynamoResponse.Item.Rating,
+      id: dynamoResponse.Item.ID,
+    };
+
+    body.genres = Array.from(dynamoResponse.Item.Genres);
+
     const response = {
       statusCode: 200,
-      body: JSON.stringify(dynamoResponse.Item),
+      body: JSON.stringify(body),
     };
 
     return response;
@@ -49,9 +57,9 @@ export const handler = async (event) => {
 
     return {
       statusCode: 500,
-      body: {
+      body: JSON.stringify({
         message: e.message,
-      },
+      }),
     };
   }
 };
