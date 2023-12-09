@@ -15,3 +15,9 @@ variable "handler" {
   type        = string
   default     = "index.handler"
 }
+
+variable "init_filename" {
+  description = "The file containing the initial code for the Lambda"
+  type        = string
+  default     = "index.mjs"
+}
