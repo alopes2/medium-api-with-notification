@@ -5,3 +5,10 @@ module "get_movie_lambda" {
   runtime = "nodejs20.x"
   handler = "index.handler"
 }
+
+module "create_movie_lambda" {
+  source  = "./modules/lambda"
+  name    = "create-movie"
+  runtime = "go1.x"
+  handler = "main"
+}

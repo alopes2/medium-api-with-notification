@@ -26,5 +26,8 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Apply
-        run: terraform destroy -auto-approve -input=false
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -input=false -var-file="variables.tfvars" -var account_id=${{ secrets.AWS_ACCOUNT_ID }}

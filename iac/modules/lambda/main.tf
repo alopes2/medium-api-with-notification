@@ -4,7 +4,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 
 resource "aws_iam_policy" "lambda_logging" {
-  name        = "lambda_logging"
+  name        = "lambda_logging_${aws_lambda_function.lambda.function_name}"
   path        = "/"
   description = "IAM policy for logging from a lambda"
   policy      = data.aws_iam_policy_document.lambda_logging.json
