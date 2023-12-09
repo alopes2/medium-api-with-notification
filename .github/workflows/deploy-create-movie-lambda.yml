@@ -1,0 +1,45 @@
+name: Deploy Create Movie Lambda
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - apps/create-movie/*
+      - .github/workflows/deploy-create-movie-lambda.yml
+
+defaults:
+  run:
+    working-directory: apps/create-movie/
+
+jobs:
+  terraform:
+    name: "Deploy CreateMovie Lambda"
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v4.1.0
+        with:
+          go-version: "1.21.4"
+
+      - name: Configure AWS Credentials Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: Build Lambda
+        run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o build/ .
+
+        # The lambda requires that the executing file be named "main"
+      - name: Rename file
+        run: mv ./build/create-movie ./build/main
+
+      - name: Zip build
+        run: zip -r -j main.zip ./build
+
+      - name: Update Lambda code
+        run: aws lambda update-function-code --function-name=create-movie --zip-file=fileb://main.zip
