@@ -17,7 +17,7 @@ module "create_movie_lambda" {
 
 module "delete_movie_lambda" {
   source        = "./modules/lambda"
-  name          = "create-movie"
+  name          = "delete-movie"
   runtime       = "nodejs20.x"
   handler       = "index.handler"
   init_filename = "index.mjs"
