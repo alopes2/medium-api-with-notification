@@ -54,6 +54,20 @@ data "aws_iam_policy_document" "update_movie_item" {
   }
 }
 
+data "aws_iam_policy_document" "publish_to_movies_updates_sns_topic" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sns:Publish",
+    ]
+
+    resources = [
+      aws_sns_topic.movie_updates.arn
+    ]
+  }
+}
+
 resource "aws_iam_policy" "get_movie_item" {
   name        = "get_movie_item"
   path        = "/"
@@ -82,6 +96,13 @@ resource "aws_iam_policy" "update_movie_item" {
   policy      = data.aws_iam_policy_document.update_movie_item.json
 }
 
+resource "aws_iam_policy" "publish_to_movies_updates_sns_topic" {
+  name        = "publish_to_movies_updates_sns_topic"
+  path        = "/"
+  description = "IAM policy allowing to PUBLISH events to ${aws_sns_topic.movie_updates.name}"
+  policy      = data.aws_iam_policy_document.publish_to_movies_updates_sns_topic.json
+}
+
 resource "aws_iam_role_policy_attachment" "allow_getitem_get_movie_lambda" {
   role       = module.get_movie_lambda.role_name
   policy_arn = aws_iam_policy.get_movie_item.arn
@@ -100,4 +121,19 @@ resource "aws_iam_role_policy_attachment" "allow_deleteitem_delete_movie_lambda"
 resource "aws_iam_role_policy_attachment" "allow_updateitem_update_movie_lambda" {
   role       = module.update_movie_lambda.role_name
   policy_arn = aws_iam_policy.update_movie_item.arn
+}
+
+resource "aws_iam_role_policy_attachment" "allow_publish_to_movies_update_sns_create_movie_lambda" {
+  role       = module.create_movie_lambda.role_name
+  policy_arn = aws_iam_policy.publish_to_movies_updates_sns_topic.arn
+}
+
+resource "aws_iam_role_policy_attachment" "allow_publish_to_movies_update_sns_delete_movie_lambda" {
+  role       = module.delete_movie_lambda.role_name
+  policy_arn = aws_iam_policy.publish_to_movies_updates_sns_topic.arn
+}
+
+resource "aws_iam_role_policy_attachment" "allow_publish_to_movies_update_sns_update_movie_lambda" {
+  role       = module.update_movie_lambda.role_name
+  policy_arn = aws_iam_policy.publish_to_movies_updates_sns_topic.arn
 }
