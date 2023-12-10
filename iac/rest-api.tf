@@ -61,3 +61,15 @@ module "create_movie_method" {
   region               = var.region
   account_id           = var.account_id
 }
+
+module "delete_movie_method" {
+  source               = "./modules/rest-api-method"
+  api_id               = aws_api_gateway_rest_api.movies_api.id
+  http_method          = "DELETE"
+  resource_id          = aws_api_gateway_resource.movie_resource.id
+  resource_path        = aws_api_gateway_resource.movie_resource.path
+  integration_uri      = module.delete_movie_lambda.invoke_arn
+  lambda_function_name = module.delete_movie_lambda.name
+  region               = var.region
+  account_id           = var.account_id
+}
