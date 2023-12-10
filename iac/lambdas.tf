@@ -22,3 +22,11 @@ module "delete_movie_lambda" {
   handler       = "index.handler"
   init_filename = "index.mjs"
 }
+
+module "test_movie_lambda" {
+  source        = "./modules/lambda"
+  name          = "test-movie"
+  runtime       = "nodejs20.x"
+  handler       = "index.handler"
+  init_filename = "index.mjs"
+}
