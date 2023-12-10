@@ -9,8 +9,13 @@ resource "aws_api_gateway_deployment" "movies_api_deployment" {
   triggers = {
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.movies_root_resource.id,
+      aws_api_gateway_resource.movie_resource.id,
       module.get_movie_method.id,
       module.get_movie_method.integration_id,
+      module.create_movie_method.id,
+      module.create_movie_method.integration_id,
+      module.delete_movie_method.id,
+      module.delete_movie_method.integration_id,
     ]))
   }
 
