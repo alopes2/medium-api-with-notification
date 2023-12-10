@@ -10,7 +10,7 @@ export const handler = async (event) => {
     return {
       statusCode: 400,
       body: JSON.stringify({
-        message: "Movie not missing",
+        message: "Movie ID missing",
       }),
     };
   }

@@ -22,4 +22,3 @@ resource "aws_lambda_function" "lambda" {
   handler       = var.handler
   runtime       = var.runtime
 }
-
