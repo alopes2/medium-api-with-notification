@@ -16,6 +16,8 @@ resource "aws_api_gateway_deployment" "movies_api_deployment" {
       module.create_movie_method.integration_id,
       module.delete_movie_method.id,
       module.delete_movie_method.integration_id,
+      module.update_movie_method.id,
+      module.update_movie_method.integration_id,
     ]))
   }
 
@@ -75,6 +77,18 @@ module "delete_movie_method" {
   resource_path        = aws_api_gateway_resource.movie_resource.path
   integration_uri      = module.delete_movie_lambda.invoke_arn
   lambda_function_name = module.delete_movie_lambda.name
+  region               = var.region
+  account_id           = var.account_id
+}
+
+module "update_movie_method" {
+  source               = "./modules/rest-api-method"
+  api_id               = aws_api_gateway_rest_api.movies_api.id
+  http_method          = "PUT"
+  resource_id          = aws_api_gateway_resource.movie_resource.id
+  resource_path        = aws_api_gateway_resource.movie_resource.path
+  integration_uri      = module.update_movie_lambda.invoke_arn
+  lambda_function_name = module.update_movie_lambda.name
   region               = var.region
   account_id           = var.account_id
 }

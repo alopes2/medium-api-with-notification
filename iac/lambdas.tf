@@ -19,3 +19,10 @@ module "delete_movie_lambda" {
   runtime = "nodejs20.x"
   handler = "index.handler"
 }
+
+module "update_movie_lambda" {
+  source  = "./modules/lambda"
+  name    = "update-movie"
+  runtime = "go1.x"
+  handler = "main"
+}
