@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -10,16 +11,28 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"github.com/google/uuid"
 )
 
 func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	var newMovie Request
-	err := json.Unmarshal([]byte(request.Body), &newMovie)
+	movieID := request.PathParameters["movieID"]
+
+	if strings.TrimSpace(movieID) == "" {
+		response, _ := json.Marshal(ErrorResponse{
+			Message: "Movie ID invalid",
+		})
+
+		return events.APIGatewayProxyResponse{
+			Body:       string(response),
+			StatusCode: 400,
+		}, nil
+	}
+
+	var updateMovie Request
+	err := json.Unmarshal([]byte(request.Body), &updateMovie)
 
 	if err != nil {
 		response, _ := json.Marshal(ErrorResponse{
-			Message: "Got error marshalling new movie item, " + err.Error(),
+			Message: "Got error marshalling update movie item, " + err.Error(),
 		})
 
 		return events.APIGatewayProxyResponse{
@@ -35,17 +48,17 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	// Create DynamoDB client
 	svc := dynamodb.New(sess)
 
-	item := Movie{
-		ID:     uuid.NewString(),
-		Title:  newMovie.Title,
-		Genres: newMovie.Genres,
-		Rating: newMovie.Rating,
+	movie := MovieData{
+		Title:  updateMovie.Title,
+		Genres: updateMovie.Genres,
+		Rating: updateMovie.Rating,
 	}
 
-	av, err := dynamodbattribute.MarshalMap(item)
+	attributeMapping, err := dynamodbattribute.MarshalMap(movie)
+
 	if err != nil {
 		response, _ := json.Marshal(ErrorResponse{
-			Message: "Got error marshalling new movie item to DynamoAttribute, " + err.Error(),
+			Message: "Got error marshalling update movie item to DynamoAttribute, " + err.Error(),
 		})
 
 		return events.APIGatewayProxyResponse{
@@ -57,15 +70,22 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	// Create item in table Movies
 	tableName := "Movies"
 
-	input := &dynamodb.PutItemInput{
-		Item:      av,
-		TableName: aws.String(tableName),
+	input := &dynamodb.UpdateItemInput{
+		ExpressionAttributeValues: attributeMapping,
+		TableName:                 aws.String(tableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"ID": {
+				S: aws.String(movieID),
+			},
+		},
+		ReturnValues:     aws.String("UPDATED_NEW"),
+		UpdateExpression: aws.String("set Rating = :rating, Title = :title, Genres = :genres"),
 	}
 
-	_, err = svc.PutItem(input)
+	_, err = svc.UpdateItem(input)
 	if err != nil {
 		response, _ := json.Marshal(ErrorResponse{
-			Message: "Got error calling PutItem, " + err.Error(),
+			Message: "Got error calling UpdateItem, " + err.Error(),
 		})
 
 		return events.APIGatewayProxyResponse{
@@ -74,17 +94,7 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 		}, nil
 	}
 
-	responseData := Response{
-		ID:     item.ID,
-		Title:  item.Title,
-		Genres: item.Genres,
-		Rating: item.Rating,
-	}
-
-	responseBody, err := json.Marshal(responseData)
-
 	response := events.APIGatewayProxyResponse{
-		Body:       string(responseBody),
 		StatusCode: 200,
 	}
 
