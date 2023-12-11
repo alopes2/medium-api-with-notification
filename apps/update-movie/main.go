@@ -46,7 +46,7 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 	}))
 
 	// Create DynamoDB client
-	svc := dynamodb.New(sess)
+	dynamoDbService := dynamodb.New(sess)
 
 	movie := MovieData{
 		Title:  updateMovie.Title,
@@ -82,7 +82,7 @@ func handleRequest(ctx context.Context, request events.APIGatewayProxyRequest) (
 		UpdateExpression: aws.String("set Rating = :rating, Title = :title, Genres = :genres"),
 	}
 
-	_, err = svc.UpdateItem(input)
+	_, err = dynamoDbService.UpdateItem(input)
 	if err != nil {
 		response, _ := json.Marshal(ErrorResponse{
 			Message: "Got error calling UpdateItem, " + err.Error(),
