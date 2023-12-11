@@ -8,9 +8,10 @@ resource "aws_sqs_queue" "movie_updates_queue" {
 }
 
 resource "aws_sns_topic_subscription" "movie_updates_sqs_target" {
-  topic_arn = aws_sns_topic.movie_updates.arn
-  protocol  = "sqs"
-  endpoint  = aws_sqs_queue.movie_updates_queue.arn
+  topic_arn            = aws_sns_topic.movie_updates.arn
+  protocol             = "sqs"
+  endpoint             = aws_sqs_queue.movie_updates_queue.arn
+  raw_message_delivery = true
 }
 
 data "aws_iam_policy_document" "sqs-queue-policy" {
