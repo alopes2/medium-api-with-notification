@@ -37,14 +37,17 @@ module "process_movie_update_events_lambda" {
 resource "aws_lambda_event_source_mapping" "movie_update_events_trigger" {
   event_source_arn = aws_sqs_queue.movie_updates_queue.arn
   function_name    = module.process_movie_update_events_lambda.arn
+  enabled          = true
 
-  filter_criteria {
-    filter {
-      pattern = jsonencode({
-        attributes = {
-          Type : ["MovieCreated", "MovieDeleted", "MovieUpdated"]
-        }
-      })
-    }
-  }
+  # If you set filters,the Lambda Event Filter deletes messages from the Queue
+  # when they don’t match the filter criteria.
+  # filter_criteria {
+  #   filter {
+  #     pattern = jsonencode({
+  #       attributes = {
+  #         Type : ["MovieCreated", "MovieDeleted", "MovieUpdated"]
+  #       }
+  #     })
+  #   }
+  # }
 }

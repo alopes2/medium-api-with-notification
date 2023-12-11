@@ -9,7 +9,7 @@ export const handler: SQSHandler = async (event: SQSEvent, context: Context): Pr
 
 async function processMessageAsync(message: SQSRecord): Promise<any> {
   try {
-    console.log(`Processed ${message.messageAttributes["Type"]} message ${message.body}`);
+    console.log(`Processed ${message.messageAttributes["Type"].stringValue} message ${message.body}`);
     // TODO: Do interesting work based on the new message
     await Promise.resolve(1); //Placeholder for actual async work
   } catch (err) {
