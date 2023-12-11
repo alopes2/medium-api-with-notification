@@ -1,0 +1,21 @@
+{
+  "name": "process-movie-update-events",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "tsc && copyfiles package.json build/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.130",
+    "copyfiles": "^2.4.1"
+  }
+}

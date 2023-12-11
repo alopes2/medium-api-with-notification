@@ -76,7 +76,7 @@ data "aws_iam_policy_document" "pull_message_from_sqs" {
       "sqs:ReceiveMessage",
       "sqs:DeleteMessage",
       "sqs:GetQueueAttributes",
-      "kms:Decrypt"
+      # "kms:Decrypt"
     ]
 
     resources = [
