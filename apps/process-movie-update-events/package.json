@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "tsc": "tsc",
     "build": "tsc && copyfiles package.json build/",

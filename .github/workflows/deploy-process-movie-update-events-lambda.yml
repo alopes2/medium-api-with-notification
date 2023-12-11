@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - apps/process-movie-update-events-movie/*
+      - apps/process-movie-update-events/*
       - .github/workflows/deploy-process-movie-update-events-lambda.yml
 
 defaults:
