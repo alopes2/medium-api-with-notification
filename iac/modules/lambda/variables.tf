@@ -15,3 +15,9 @@ variable "handler" {
   type        = string
   default     = "index.handler"
 }
+
+variable "environment_variables" {
+  description = "The environment variables for this lambda"
+  type        = map(string)
+  default     = {}
+}

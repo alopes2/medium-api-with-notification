@@ -21,4 +21,7 @@ resource "aws_lambda_function" "lambda" {
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = var.handler
   runtime       = var.runtime
+  environment {
+    variables = var.environment_variables
+  }
 }

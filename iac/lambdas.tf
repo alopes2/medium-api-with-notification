@@ -32,6 +32,10 @@ module "email_notification_lambda" {
   name    = "email-notification"
   runtime = "nodejs20.x"
   handler = "index.handler"
+  environment_variables = {
+    "SOURCE_EMAIL"      = "${var.source_email}"
+    "DESTINATION_EMAIL" = "${var.destination_email}"
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "email_notification_trigger" {
