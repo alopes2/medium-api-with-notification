@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - apps/create-movie/*
+      - apps/create-movie/**/*
       - .github/workflows/deploy-create-movie-lambda.yml
 
 defaults:

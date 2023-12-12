@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - apps/email-notification/*
+      - apps/email-notification/**/*
       - .github/workflows/deploy-email-notification-lambda.yml
 
 defaults:

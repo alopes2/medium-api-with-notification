@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - apps/get-movie/*
+      - apps/get-movie/**/*
       - .github/workflows/deploy-get-movie-lambda.yml
 
 defaults:
