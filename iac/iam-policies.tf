@@ -94,8 +94,8 @@ data "aws_iam_policy_document" "allow_send_email_through_ses" {
     ]
 
     resources = [
-      "arn:aws:ses:eu-central-1:${var.account_id}:identity/${var.source_email}",
-      "arn:aws:ses:eu-central-1:${var.account_id}:configuration-set/my-first-configuration-set",
+      aws_ses_email_identity.email_identity.arn,
+      aws_ses_configuration_set.configuration_set.arn,
     ]
   }
 }

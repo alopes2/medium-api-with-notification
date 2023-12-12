@@ -9,8 +9,8 @@ variable "account_id" {
   type        = string
 }
 
-variable "source_email" {
-  description = "The source email for the email notification Lambda function"
+variable "email_identity" {
+  description = "The email to be configured in configured in SES"
   type        = string
 }
 

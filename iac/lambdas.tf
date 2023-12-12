@@ -33,7 +33,7 @@ module "email_notification_lambda" {
   runtime = "nodejs20.x"
   handler = "index.handler"
   environment_variables = {
-    "SOURCE_EMAIL"      = "${var.source_email}"
+    "SOURCE_EMAIL"      = "${var.email_identity}"
     "DESTINATION_EMAIL" = "${var.destination_email}"
   }
 }
