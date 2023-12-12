@@ -27,6 +27,7 @@ async function processMessageAsync(message: SQSRecord, client: SESClient): Promi
     console.error(err);
   }
 }
+
 async function sendEmail(message: SQSRecord, eventType: string, client: SESClient) {
   const [subject, body] = buildSubjectAndBody(message.body, eventType);
 
