@@ -85,6 +85,21 @@ data "aws_iam_policy_document" "pull_message_from_sqs" {
   }
 }
 
+data "aws_iam_policy_document" "allow_send_email_through_ses" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ses:SendEmail",
+    ]
+
+    resources = [
+      "arn:aws:ses:eu-central-1:${var.account_id}:identity/${var.source_email}",
+      "arn:aws:ses:eu-central-1:${var.account_id}:configuration-set/my-first-configuration-set",
+    ]
+  }
+}
+
 resource "aws_iam_policy" "get_movie_item" {
   name        = "get_movie_item"
   path        = "/"
@@ -127,6 +142,13 @@ resource "aws_iam_policy" "pull_message_from_sqs" {
   policy      = data.aws_iam_policy_document.pull_message_from_sqs.json
 }
 
+resource "aws_iam_policy" "allow_email_ses" {
+  name        = "allow_email_ses"
+  path        = "/"
+  description = "IAM policy allowing to SEND EMAIL from SES"
+  policy      = data.aws_iam_policy_document.allow_send_email_through_ses.json
+}
+
 resource "aws_iam_role_policy_attachment" "allow_getitem_get_movie_lambda" {
   role       = module.get_movie_lambda.role_name
   policy_arn = aws_iam_policy.get_movie_item.arn
@@ -165,4 +187,9 @@ resource "aws_iam_role_policy_attachment" "allow_publish_to_movies_update_sns_up
 resource "aws_iam_role_policy_attachment" "allow_pull_messages_sqs_process_events_lambda" {
   role       = module.email_notification_lambda.role_name
   policy_arn = aws_iam_policy.pull_message_from_sqs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "allow_email_ses_email_notification_lambda" {
+  role       = module.email_notification_lambda.role_name
+  policy_arn = aws_iam_policy.allow_email_ses.arn
 }
