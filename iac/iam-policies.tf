@@ -163,6 +163,6 @@ resource "aws_iam_role_policy_attachment" "allow_publish_to_movies_update_sns_up
 }
 
 resource "aws_iam_role_policy_attachment" "allow_pull_messages_sqs_process_events_lambda" {
-  role       = module.process_movie_update_events_lambda.role_name
+  role       = module.email_notification_lambda.role_name
   policy_arn = aws_iam_policy.pull_message_from_sqs.arn
 }

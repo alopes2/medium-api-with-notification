@@ -1,5 +1,5 @@
 {
-  "name": "process-movie-update-events",
+  "name": "email-notification",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

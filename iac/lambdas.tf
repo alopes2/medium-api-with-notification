@@ -27,16 +27,16 @@ module "update_movie_lambda" {
   handler = "main"
 }
 
-module "process_movie_update_events_lambda" {
+module "email_notification_lambda" {
   source  = "./modules/lambda"
-  name    = "process-movie-update-events"
+  name    = "email-notification"
   runtime = "nodejs20.x"
   handler = "index.handler"
 }
 
-resource "aws_lambda_event_source_mapping" "movie_update_events_trigger" {
+resource "aws_lambda_event_source_mapping" "email_notification_trigger" {
   event_source_arn = aws_sqs_queue.movie_updates_queue.arn
-  function_name    = module.process_movie_update_events_lambda.arn
+  function_name    = module.email_notification_lambda.arn
   enabled          = true
 
   # If you set filters,the Lambda Event Filter deletes messages from the Queue
