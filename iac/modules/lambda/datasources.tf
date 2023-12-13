@@ -11,7 +11,6 @@ data "archive_file" "lambda" {
 data "aws_iam_policy_document" "assume_role" {
 
   statement {
-    sid = "AllowLambdaToAssumeRole"
     effect = "Allow"
 
     principals {
@@ -22,9 +21,10 @@ data "aws_iam_policy_document" "assume_role" {
     actions = ["sts:AssumeRole"]
 
   }
+}
 
+data "aws_iam_policy_document" "lambda_logging" {
   statement {
-    sid = "AllowLambdaToWriteLogs"
     effect = "Allow"
 
     actions = [
